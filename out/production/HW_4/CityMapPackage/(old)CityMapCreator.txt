@@ -1,0 +1,120 @@
+package CityMapPackage;
+
+import QueuePackage.QueueInterface;
+import StackPackage.StackInterface;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+/**
+ * <b><u>CS 241 Homework 4</b></u>
+ * <br>
+ * This class creates a city map of cities with directed roads between them and distances.
+ *
+ * To populate the map with cities, there needs to be an inputted city file with the following format:
+ * City Number (integer), City Code (string), Full City Name (string), Population (integer), and Elevation (integer).
+ *
+ * To populate the map with the raods, there needs to be an inputted road file with the following format:
+ * From_City (city number), To_City (city number), and Distance (integer).
+ *
+ * @author Lisa Chen
+ * @since May 20, 2018
+ */
+public class CityMapCreator
+{
+    CityGraph cityGraph;
+
+    /**
+     * Constructs a city map from the city and road data files.
+     * @param cityFile Data file with information about the cities, including city number, city code, full city
+     *                     name, population, and elevation
+     * @param roadFile Data file with information about the roads, including from-city (city number), to-city
+     *                     (city number), and distance between them
+     * @throws FileNotFoundException When any of the files given cannot be found
+     */
+    public CityMapCreator(File cityFile, File roadFile) throws FileNotFoundException
+    {
+        cityGraph = new CityGraph();
+        createCities(cityFile);
+        createRoads(roadFile);
+    }
+
+    /**
+     * Creates the cities in the map.
+     * @param cityData Data file with information about the cities, including city number, city code, full city
+     *                     name, population, and elevation
+     * @throws FileNotFoundException When the city file cannot be found
+     */
+    private void createCities(File cityData) throws FileNotFoundException
+    {
+        Scanner in = new Scanner(cityData);
+        /*
+        go through file and read line by line; each line is in this order in the city file:
+        City Number, City Code, Full City Name, Population, and Elevation.
+         */
+        while (in.hasNext())
+        {
+            String line = in.nextLine();
+            Scanner lineScanner = new Scanner(line);
+            int cityNumber = lineScanner.nextInt();
+            String cityCode = lineScanner.next();
+            String fullCityName = lineScanner.next();
+            int population = -1;
+
+            //full city name can be multiple words - scan until words are done and set population
+            while (population == -1)
+            {
+                String nextText = lineScanner.next();
+                try
+                {
+                    population = Integer.parseInt(nextText);
+                }
+                catch(NumberFormatException e)
+                {
+                    fullCityName += " " + nextText;
+                }
+            }
+            int elevation = lineScanner.nextInt();
+            cityGraph.addVertex(cityNumber, cityCode, fullCityName, population, elevation);
+        }
+        in.close();
+    }
+
+    /**
+     * Creates the directed roads between the cities in the map.
+     * @param roadData Data file with information about the roads, including from-city (city number), to-city
+     *                     (city number), and distance between them
+     * @throws FileNotFoundException When the road file cannot be found
+     */
+    private void createRoads (File roadData) throws FileNotFoundException
+    {
+        Scanner in = new Scanner(roadData);
+        /*
+        go through file and read line by line; each line is in this order in the road file:
+        From_City (city number), To_City (city number), and Distance
+         */
+        while (in.hasNext())
+        {
+            String line = in.nextLine();
+            Scanner lineScanner = new Scanner(line);
+            int fromCity = lineScanner.nextInt();
+            int toCity = lineScanner.nextInt();
+            int distance = lineScanner.nextInt();
+            cityGraph.addEdge(fromCity, toCity, distance);
+        }
+        in.close();
+    }
+
+    public QueueInterface<Integer> getBreadthFirstTraversal(Integer origin)
+    {
+        return cityGraph.getBreadthFirstTraversal(origin);
+    }
+    public QueueInterface<Integer> getDepthFirstTraversal(Integer origin)
+    {
+        return cityGraph.getDepthFirstTraversal(origin);
+    }
+    public int getCheapestPath(Integer begin, Integer end, StackInterface<Integer> path)
+    {
+        return cityGraph.getCheapestPath(begin, end, path);
+    }
+}
