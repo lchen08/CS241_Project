@@ -7,6 +7,8 @@ import java.util.NoSuchElementException;
  * <b><u>CS 241 Homework 4 - City Graph</b></u>
  * <br>
  * This class creates a vertex for a graph. Each vertex can be connected in a graph through an edge.
+ * Original author is professor Johnathan Johannsen with edits by Lisa Chen to complete the 
+ * missing code as required by the assignment.
  *
  * @author Lisa Chen
  * @since May 24, 2018
