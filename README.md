@@ -7,4 +7,4 @@ The given files were city.dat and road.dat, which provided the city information 
 
 The Javadoc code will have my name (Lisa Chen) as the author if the code was created by me or has me as a coauthor. 
 
-I coded the requirements and added an additional GUI (not required) using Java swing to allow easier and quicker city/road updating and action requests. The GUI also implements uploading the files (if there are multiple) and saving changes.
+I coded the requirements and added an additional GUI (not required) using Java swing to allow easier and quicker city/road updating and action requests. The GUI also implements uploading the files (if there are multiple) and saving changes (prompts for save and creates a file with a new name to ensure no overwriting original files). 
